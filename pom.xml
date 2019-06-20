@@ -29,18 +29,17 @@
     	<!--数据收集 -->
         <module>data-collect</module>
         <!--后台配置管理端 -->
-        <module>data-admin</module>
+        <!--<module>data-admin</module>-->
 		<!--核心业务代码-->
 		<module>data-core</module>
         <!--数据展示 -->
-        <module>data-app</module>
+        <!--<module>data-app</module>-->
         <!--数据爬取-->
-        <module>data-crawl</module>
+        <!--<module>data-crawl</module>-->
         <!--H5编辑器-->
-        <module>canvas-editor</module>
+        <!--<module>canvas-editor</module>-->
         <!--注册中心-->
-        <module>registry</module>
-		<module>data-core</module>
+        <!--<module>registry</module>-->
 
 	</modules>
 

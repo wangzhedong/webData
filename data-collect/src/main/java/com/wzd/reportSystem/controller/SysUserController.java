@@ -1,6 +1,7 @@
 package com.wzd.reportSystem.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
- *  前端控制器
+ *  用户管理
  * </p>
  *
  * @author wzd
@@ -40,20 +41,21 @@ public class SysUserController {
         if(StringUtils.isBlank(sysUser.getUserName())){
             return R.failed("用户名不能为空！");
         }
-        int i = sysUserService.count(new QueryWrapper<SysUser>().eq("user_name",sysUser.getUserName()).eq("is_delete","0"));
+        int i = sysUserService.count(new QueryWrapper<SysUser>().eq("user_name",sysUser.getUserName()));
         if(i!= 0 ){
             return R.failed("该用户名已存在！");
         }
         sysUserService.save(sysUser);
-        return R.ok("");
+        return R.ok(null);
     }
 
     @GetMapping("query")
     public R query(Integer pageIndex,Integer pageSize,String search){
         Page<SysUser> page = new Page<>(pageIndex,pageSize);
-        QueryWrapper queryWrapper = null;
+        LambdaQueryWrapper<SysUser> queryWrapper = null;
         if(StringUtils.isNotBlank(search)){
-            queryWrapper = new QueryWrapper<SysUser>().like("user",search).eq("is_delete","0");
+            queryWrapper = new LambdaQueryWrapper<SysUser>().eq(SysUser::getUserName,search);
+            //queryWrapper = new QueryWrapper<SysUser>().like("user",search);
         }
 
         IPage<SysUser> result = sysUserService.page(page,queryWrapper);
