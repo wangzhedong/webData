@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2019-05-14
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/sysUser")
 public class SysUserController {
 
     @Autowired
@@ -32,8 +32,8 @@ public class SysUserController {
      * @param sysUser
      * @return
      */
-    @PostMapping("save")
-    public R save(@RequestBody SysUser sysUser){
+    @PostMapping("add")
+    public R add(@RequestBody SysUser sysUser){
 
         if(sysUser == null){
             return R.failed("数据不能为空！");
@@ -41,21 +41,29 @@ public class SysUserController {
         if(StringUtils.isBlank(sysUser.getUserName())){
             return R.failed("用户名不能为空！");
         }
-        int i = sysUserService.count(new QueryWrapper<SysUser>().eq("user_name",sysUser.getUserName()));
+        int i = sysUserService.count(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUserName,sysUser.getUserName()));
         if(i!= 0 ){
             return R.failed("该用户名已存在！");
         }
+        sysUser.setPassword("123456");
+        sysUser.setSex("1");
         sysUserService.save(sysUser);
         return R.ok(null);
     }
 
-    @GetMapping("query")
-    public R query(Integer pageIndex,Integer pageSize,String search){
+    /**
+     * 分页查询用户
+     * @param pageIndex
+     * @param pageSize
+     * @param search
+     * @return
+     */
+    @GetMapping("queryByPage")
+    public R queryByPage(Integer pageIndex,Integer pageSize,String search){
         Page<SysUser> page = new Page<>(pageIndex,pageSize);
         LambdaQueryWrapper<SysUser> queryWrapper = null;
         if(StringUtils.isNotBlank(search)){
             queryWrapper = new LambdaQueryWrapper<SysUser>().eq(SysUser::getUserName,search);
-            //queryWrapper = new QueryWrapper<SysUser>().like("user",search);
         }
 
         IPage<SysUser> result = sysUserService.page(page,queryWrapper);
