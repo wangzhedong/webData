@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class BaseEntity implements Serializable {
+public class BaseEntity implements Serializable,Cloneable {
 
     @TableId(value = "id",type = IdType.ID_WORKER_STR)
     private String id;

@@ -1,4 +1,4 @@
-package com.wzd.core.config;
+package com.wzd.core.config.mybatisplus;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.extern.slf4j.Slf4j;

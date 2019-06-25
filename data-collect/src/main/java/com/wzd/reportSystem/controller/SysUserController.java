@@ -2,7 +2,6 @@ package com.wzd.reportSystem.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -63,7 +62,7 @@ public class SysUserController {
         Page<SysUser> page = new Page<>(pageIndex,pageSize);
         LambdaQueryWrapper<SysUser> queryWrapper = null;
         if(StringUtils.isNotBlank(search)){
-            queryWrapper = new LambdaQueryWrapper<SysUser>().eq(SysUser::getUserName,search);
+            queryWrapper = new LambdaQueryWrapper<SysUser>().like(SysUser::getUserName,search);
         }
 
         IPage<SysUser> result = sysUserService.page(page,queryWrapper);
