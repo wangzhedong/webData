@@ -1,9 +1,12 @@
 package com.wzd.core.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.wzd.core.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 /**
  * <p>
@@ -32,5 +35,7 @@ public class SysUser extends BaseEntity {
 
     private String sex;
 
+    @TableField(exist=false)
+    private List<SysUserRole> userRoles;
 
 }

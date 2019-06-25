@@ -12,12 +12,12 @@ import java.util.Date;
 public class BaseEntity implements Serializable,Cloneable {
 
     @TableId(value = "id",type = IdType.ID_WORKER_STR)
-    private String id;
+    protected String id;
 
-    private Date createTm = new Date();
+    protected Date createTm = new Date();
 
-    private Date updateTm;
+    protected Date updateTm;
 
     @TableLogic(value = "0",delval = "1")
-    private String isDelete;
+    protected String isDelete;
 }

@@ -5,11 +5,18 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wzd.core.dto.UserRoleDto;
+import com.wzd.core.entity.SysRole;
 import com.wzd.core.entity.SysUser;
+import com.wzd.core.entity.SysUserRole;
+import com.wzd.core.service.SysUserRoleService;
 import com.wzd.core.service.SysUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -26,6 +33,8 @@ public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
     /**
      * 新增用户
      * @param sysUser
@@ -69,6 +78,47 @@ public class SysUserController {
         return R.ok(result);
     }
 
+    @GetMapping("resetPassword")
+    public R resetPassword(String id){
+        if(StringUtils.isBlank(id)){
+            return R.failed("id不能为空！");
+        }
+        SysUser user = new SysUser();
+        user.setId(id);
+        user.setPassword("123456");
+        sysUserService.updateById(user);
+        return R.ok(null);
+    }
+
+    @GetMapping("del")
+    public R del(String id){
+        if(StringUtils.isBlank(id)){
+            return R.failed("id不能为空！");
+        }
+        SysUser user = new SysUser();
+        user.setId(id);
+        user.setPassword("123456");
+        sysUserService.removeById(id);
+        return R.ok(null);
+    }
+
+    @PostMapping("setRole")
+    public R setRole(@RequestBody UserRoleDto dto){
+        List<String> userIds = dto.getUserIds();
+        List<SysRole> sysRoles = dto.getSysRoles();
+        List<SysUserRole> userRoles = new ArrayList<>();
+        for(String userId:userIds){
+            for(SysRole role : sysRoles){
+                SysUserRole userRole = new SysUserRole();
+                userRole.setUserId(userId);
+                userRole.setRoleId(role.getId());
+                userRole.setRoleName(role.getRoleName());
+                userRoles.add(userRole);
+            }
+        }
+        sysUserRoleService.saveBatch(userRoles,userRoles.size());
+        return R.ok(null);
+    }
 
 }
 

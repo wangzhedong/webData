@@ -22,7 +22,10 @@ public class SysUserRole extends BaseEntity {
 
     private String roleId;
 
+    private String roleName;
+
     private String userId;
+
 
 
 }

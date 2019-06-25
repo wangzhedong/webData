@@ -74,5 +74,7 @@ public class SysRoleController {
         List<SysRole> list = sysRoleService.list(new QueryWrapper<>());
         return R.ok(list);
     }
+
+
 }
 
