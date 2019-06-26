@@ -2,6 +2,7 @@ package com.wzd.reportSystem.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -75,6 +76,11 @@ public class SysUserController {
         }
 
         IPage<SysUser> result = sysUserService.page(page,queryWrapper);
+        List<SysUser> list = result.getRecords();
+        for(SysUser user:list){
+            List<SysUserRole> userRoles = sysUserRoleService.list(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId,user.getId()));
+            user.setUserRoles(userRoles);
+        }
         return R.ok(result);
     }
 
@@ -105,17 +111,7 @@ public class SysUserController {
     public R setRole(@RequestBody UserRoleDto dto){
         List<String> userIds = dto.getUserIds();
         List<SysRole> sysRoles = dto.getSysRoles();
-        List<SysUserRole> userRoles = new ArrayList<>();
-        for(String userId:userIds){
-            for(SysRole role : sysRoles){
-                SysUserRole userRole = new SysUserRole();
-                userRole.setUserId(userId);
-                userRole.setRoleId(role.getId());
-                userRole.setRoleName(role.getRoleName());
-                userRoles.add(userRole);
-            }
-        }
-        sysUserRoleService.saveBatch(userRoles,userRoles.size());
+        sysUserRoleService.setRole(userIds,sysRoles);
         return R.ok(null);
     }
 

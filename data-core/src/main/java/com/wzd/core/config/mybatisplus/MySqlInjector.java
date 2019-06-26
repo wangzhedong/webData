@@ -3,6 +3,7 @@ package com.wzd.core.config.mybatisplus;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
 import com.wzd.core.config.mybatisplus.method.DeleteAll;
+import com.wzd.core.config.mybatisplus.method.PhysicsDelete;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class MySqlInjector extends DefaultSqlInjector {
     public List<AbstractMethod> getMethodList() {
         List<AbstractMethod> methodList = super.getMethodList();
         //增加自定义方法
+        methodList.add(new PhysicsDelete());
         methodList.add(new DeleteAll());
         return methodList;
     }
