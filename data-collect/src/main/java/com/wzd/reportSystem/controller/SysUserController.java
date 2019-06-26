@@ -97,7 +97,6 @@ public class SysUserController {
         }
         SysUser user = new SysUser();
         user.setId(id);
-        user.setPassword("123456");
         sysUserService.removeById(id);
         return R.ok(null);
     }
