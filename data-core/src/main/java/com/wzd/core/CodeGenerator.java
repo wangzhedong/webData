@@ -124,9 +124,9 @@ public class CodeGenerator {
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
         //strategy.setSuperControllerClass("com.baomidou.ant.common.BaseController");
-        String[] include = {"sys_user","sys_user_role","sys_role_resources","sys_role","sys_resources","sys_dept","excel_temp","excel_sheet","excel_header","excel_data","dept_rule"};
-        //strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
-        strategy.setInclude(include);
+        //String[] include = {"sys_user","sys_user_role","sys_role_resources","sys_role","sys_resources","sys_dept","excel_temp","excel_sheet","excel_header","excel_data","dept_rule"};
+        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
+        //strategy.setInclude(include);
         String[] columns = {"id","create_tm","update_tm","is_delete"};
         strategy.setSuperEntityColumns(columns);
         strategy.setControllerMappingHyphenStyle(false);

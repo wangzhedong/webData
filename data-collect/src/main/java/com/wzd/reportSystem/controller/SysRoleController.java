@@ -79,6 +79,43 @@ public class SysRoleController {
         return R.ok(list);
     }
 
+    /**
+     * 删除角色
+     * @param id
+     * @return
+     */
+    @GetMapping("del")
+    public R del(String id){
+        if(StringUtils.isBlank(id)){
+            return R.failed("id不能为空！");
+        }
+        sysRoleService.removeById(id);
+        return R.ok(null);
+    }
+
+    /**
+     * 更新角色
+     * @param sysRole
+     * @return
+     */
+    @PostMapping("update")
+    public R update(@RequestBody SysRole sysRole){
+        if(sysRole == null){
+            return R.failed("角色数据不能为空！");
+        }
+        if(StringUtils.isBlank(sysRole.getRoleName())){
+            return R.failed("角色名称不能为空！");
+        }
+        if(StringUtils.isBlank(sysRole.getId())){
+            return R.failed("id不能为空！");
+        }
+        int i = sysRoleService.count(new LambdaQueryWrapper<SysRole>().eq(SysRole::getRoleName,sysRole.getRoleName()));
+        if(i> 1 ){
+            return R.failed("该角色名已存在！");
+        }
+        sysRoleService.updateById(sysRole);
+        return R.ok(null);
+    }
 
 }
 

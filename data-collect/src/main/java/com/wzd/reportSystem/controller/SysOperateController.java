@@ -2,7 +2,6 @@ package com.wzd.reportSystem.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -11,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author wzd
- * @since 2019-05-14
+ * @since 2019-06-27
  */
 @RestController
-@RequestMapping("/sysRoleResources")
-public class SysRoleResourcesController {
+@RequestMapping("/sysOperate")
+public class SysOperateController {
 
 }
 

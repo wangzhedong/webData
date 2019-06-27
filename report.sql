@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 19/06/2019 22:28:43
+ Date: 27/06/2019 23:34:28
 */
 
 SET NAMES utf8mb4;
@@ -127,6 +127,38 @@ CREATE TABLE `sys_group`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for sys_module
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_module`;
+CREATE TABLE `sys_module`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `parent_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `module_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `router_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `type` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `create_tm` date DEFAULT NULL,
+  `update_tm` date DEFAULT NULL,
+  `is_delete` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for sys_operate
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_operate`;
+CREATE TABLE `sys_operate`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `module_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `operate_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `request_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `type` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `create_tm` date DEFAULT NULL,
+  `update_tm` date DEFAULT NULL,
+  `is_delete` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for sys_resources
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_resources`;
@@ -149,12 +181,25 @@ DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role`  (
   `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `role_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `role_desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `role_remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `create_tm` date DEFAULT NULL,
   `update_tm` date DEFAULT NULL,
   `is_delete` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_role
+-- ----------------------------
+INSERT INTO `sys_role` VALUES ('1143485301712404482', '管理员', 'admin', '2019-06-25', NULL, '1');
+INSERT INTO `sys_role` VALUES ('1143518490518515714', '管理员', 'admin', '2019-06-25', NULL, '0');
+INSERT INTO `sys_role` VALUES ('1143885398036066306', '普通用户', '普通用户', '2019-06-26', NULL, '0');
+INSERT INTO `sys_role` VALUES ('1144206524327063553', 'yonghu', 'fdsfs', '2019-06-27', NULL, '0');
+INSERT INTO `sys_role` VALUES ('1144206560553267202', '默认角色', '哈哈哈', '2019-06-27', NULL, '0');
+INSERT INTO `sys_role` VALUES ('1144237200677990401', '123', '1324', '2019-06-27', NULL, '0');
+INSERT INTO `sys_role` VALUES ('1144237241417265153', '456', '43343', '2019-06-27', NULL, '0');
+INSERT INTO `sys_role` VALUES ('1144237283007983618', '2342322222222222', '2322222222222222', '2019-06-27', NULL, '0');
+INSERT INTO `sys_role` VALUES ('1144237313991307266', '4555555555555555', '5555555555555555', '2019-06-27', NULL, '0');
 
 -- ----------------------------
 -- Table structure for sys_role_resources
@@ -180,6 +225,8 @@ CREATE TABLE `sys_user`  (
   `user_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `password` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `sex` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `tel` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `uemail` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `create_tm` date DEFAULT NULL,
   `update_tm` date DEFAULT NULL,
   `is_delete` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
@@ -189,10 +236,9 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1122134389022658562', NULL, '王哲冬', NULL, NULL, '2019-04-27', NULL, NULL);
-INSERT INTO `sys_user` VALUES ('1124599580176023553', NULL, '王哲冬', NULL, NULL, '2019-05-04', NULL, NULL);
-INSERT INTO `sys_user` VALUES ('1125389331762159617', NULL, '王哲冬', NULL, NULL, '2019-05-06', NULL, NULL);
-INSERT INTO `sys_user` VALUES ('1125389529653616641', NULL, '王哲冬', NULL, NULL, '2019-05-06', NULL, NULL);
+INSERT INTO `sys_user` VALUES ('1143885223431385089', NULL, 'wang', '123456', '1', '15179161559', 'test@qq.com', '2019-06-27', NULL, '0');
+INSERT INTO `sys_user` VALUES ('1143885280415199234', NULL, 'zhe', '123456', '1', '15179161559', 'zhe@qq.com', '2019-06-26', NULL, '0');
+INSERT INTO `sys_user` VALUES ('1143898039836114946', NULL, 'wanghedong', '123456', '1', '15179161559', 'test@qq.com', '2019-06-26', NULL, '0');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -201,12 +247,20 @@ DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role`  (
   `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `role_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `role_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `user_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `create_tm` date DEFAULT NULL,
   `update_tm` date DEFAULT NULL,
   `is_delete` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_user_role
+-- ----------------------------
+INSERT INTO `sys_user_role` VALUES ('1144231340731985921', '1143518490518515714', '管理员', '1143885223431385089', '2019-06-27', NULL, '0');
+INSERT INTO `sys_user_role` VALUES ('1144231340744568833', '1143518490518515714', '管理员', '1143885280415199234', '2019-06-27', NULL, '0');
+INSERT INTO `sys_user_role` VALUES ('1144231340752957442', '1143518490518515714', '管理员', '1143898039836114946', '2019-06-27', NULL, '0');
 
 -- ----------------------------
 -- Table structure for testproject

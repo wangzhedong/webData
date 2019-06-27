@@ -34,6 +34,7 @@ public class SysUserController {
 
     @Autowired
     private SysUserRoleService sysUserRoleService;
+
     /**
      * 新增用户
      * @param sysUser
@@ -102,8 +103,6 @@ public class SysUserController {
         if(StringUtils.isBlank(id)){
             return R.failed("id不能为空！");
         }
-        SysUser user = new SysUser();
-        user.setId(id);
         sysUserService.removeById(id);
         return R.ok(null);
     }
