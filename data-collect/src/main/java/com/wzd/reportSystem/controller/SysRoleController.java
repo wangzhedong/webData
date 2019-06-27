@@ -69,6 +69,10 @@ public class SysRoleController {
         return R.ok(result);
     }
 
+    /**
+     * 查询所有角色
+     * @return
+     */
     @GetMapping("queryAll")
     public R queryAll(){
         List<SysRole> list = sysRoleService.list(new QueryWrapper<>());
