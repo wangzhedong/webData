@@ -1,14 +1,14 @@
 package com.wzd.core.service;
 
-import com.wzd.core.entity.DeptRule;
-import com.wzd.core.mapper.DeptRuleMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wzd.core.entity.ExcelRule;
+import com.wzd.core.mapper.ExcelRuleMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
- *  服务实现类
+ *  报表匹配规则Service
  * </p>
  *
  * @author wzd
@@ -16,6 +16,5 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional(rollbackFor = {Exception.class})
-public class DeptRuleService extends ServiceImpl<DeptRuleMapper, DeptRule> {
-
+public class ExcelRuleService extends ServiceImpl<ExcelRuleMapper, ExcelRule> {
 }

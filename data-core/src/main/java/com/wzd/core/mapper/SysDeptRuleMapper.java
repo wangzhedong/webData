@@ -1,6 +1,6 @@
 package com.wzd.core.mapper;
 
-import com.wzd.core.entity.DeptRule;
+import com.wzd.core.entity.SysDeptRule;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author wzd
- * @since 2019-05-14
+ * @since 2019-07-01
  */
-public interface DeptRuleMapper extends BaseMapper<DeptRule> {
+public interface SysDeptRuleMapper extends BaseMapper<SysDeptRule> {
 
 }

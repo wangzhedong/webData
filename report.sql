@@ -11,26 +11,11 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 27/06/2019 23:34:28
+ Date: 01/07/2019 23:40:42
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for dept_rule
--- ----------------------------
-DROP TABLE IF EXISTS `dept_rule`;
-CREATE TABLE `dept_rule`  (
-  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `dept_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `rule_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `rule_detail` json,
-  `create_tm` date DEFAULT NULL,
-  `update_tm` date DEFAULT NULL,
-  `is_delete` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for excel_data
@@ -63,6 +48,20 @@ CREATE TABLE `excel_header`  (
   `create_tm` date DEFAULT NULL,
   `update_tm` date DEFAULT NULL,
   `is_delete` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for excel_rule
+-- ----------------------------
+DROP TABLE IF EXISTS `excel_rule`;
+CREATE TABLE `excel_rule`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `rule_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `rule_detail` json,
+  `create_tm` date DEFAULT NULL,
+  `update_tm` date DEFAULT NULL,
+  `is_delete` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -106,6 +105,21 @@ CREATE TABLE `sys_dept`  (
   `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `dept_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `dept_no` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `create_tm` date DEFAULT NULL,
+  `update_tm` date DEFAULT NULL,
+  `is_delete` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for sys_dept_rule
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dept_rule`;
+CREATE TABLE `sys_dept_rule`  (
+  `id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `dept_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `rule_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `rule_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `create_tm` date DEFAULT NULL,
   `update_tm` date DEFAULT NULL,
   `is_delete` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
@@ -272,7 +286,7 @@ CREATE TABLE `testproject`  (
   `student` json NOT NULL,
   `my_rows` json,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of testproject

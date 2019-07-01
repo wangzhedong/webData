@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *  报表匹配规则
  * </p>
  *
  * @author wzd
@@ -16,11 +16,9 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class DeptRule extends BaseEntity {
+public class ExcelRule extends BaseEntity {
 
     private static final long serialVersionUID=1L;
-
-    private String deptId;
 
     private String ruleName;
 
