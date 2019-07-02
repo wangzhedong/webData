@@ -6,9 +6,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzd.core.dto.UserRoleDto;
+import com.wzd.core.entity.SysDept;
 import com.wzd.core.entity.SysRole;
 import com.wzd.core.entity.SysUser;
 import com.wzd.core.entity.SysUserRole;
+import com.wzd.core.service.SysDeptService;
 import com.wzd.core.service.SysUserRoleService;
 import com.wzd.core.service.SysUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +36,9 @@ public class SysUserController {
 
     @Autowired
     private SysUserRoleService sysUserRoleService;
+
+    @Autowired
+    private SysDeptService sysDeptService;
 
     /**
      * 新增用户
@@ -73,6 +78,7 @@ public class SysUserController {
             List<SysUserRole> userRoles = sysUserRoleService.list(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId,user.getId()));
             user.setUserRoles(userRoles);
         }
+        List<SysDept> deptList = sysDeptService.list(null);
         return R.ok(result);
     }
 
