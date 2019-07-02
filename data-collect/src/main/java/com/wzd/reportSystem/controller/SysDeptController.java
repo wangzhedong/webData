@@ -2,16 +2,21 @@ package com.wzd.reportSystem.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wzd.core.entity.ExcelRule;
 import com.wzd.core.entity.SysDept;
-import com.wzd.core.entity.SysUser;
+import com.wzd.core.service.ExcelRuleService;
 import com.wzd.core.service.SysDeptService;
-import com.wzd.core.service.SysUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -29,7 +34,7 @@ public class SysDeptController {
     private SysDeptService sysDeptService;
 
     @Autowired
-    private SysUserService sysUserService;
+    private ExcelRuleService excelRuleService;
 
     @PostMapping("add")
     public R add(@RequestBody SysDept sysDept){
@@ -80,7 +85,12 @@ public class SysDeptController {
             queryWrapper = new LambdaQueryWrapper<SysDept>().like(SysDept::getDeptName,search).or().like(SysDept::getDeptNo,search);
         }
         IPage<SysDept> result = sysDeptService.page(page,queryWrapper);
-        return R.ok(result);
+        String[] selectFields = {"id","rule_name"};
+        List<ExcelRule> rules = excelRuleService.list(new QueryWrapper<ExcelRule>().select(selectFields));
+        Map<String,Object> map = new HashMap<>();
+        map.put("pages",result);
+        map.put("rules",rules);
+        return R.ok(map);
     }
 
 }

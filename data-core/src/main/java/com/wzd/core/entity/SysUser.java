@@ -35,6 +35,8 @@ public class SysUser extends BaseEntity {
 
     private String sex;
 
+    private String deptId;
+
     @TableField(exist=false)
     private List<SysUserRole> userRoles;
 

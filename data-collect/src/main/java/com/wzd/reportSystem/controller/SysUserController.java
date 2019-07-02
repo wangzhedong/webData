@@ -154,6 +154,9 @@ public class SysUserController {
         if(StringUtils.isBlank(sysUser.getUserName())){
             return R.failed("用户名不能为空！");
         }
+        if(StringUtils.isBlank((sysUser.getDeptId()))){
+            return R.failed("请选择所属部门");
+        }
         int i = sysUserService.count(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUserName,sysUser.getUserName()));
         if(type.equals("add")){
             if(i!= 0 ){
