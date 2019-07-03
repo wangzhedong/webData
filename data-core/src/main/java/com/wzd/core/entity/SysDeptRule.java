@@ -1,5 +1,6 @@
 package com.wzd.core.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.wzd.core.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,6 +25,7 @@ private static final long serialVersionUID=1L;
 
     private String ruleId;
 
+    @TableField(exist=false)
     private String ruleName;
 
 

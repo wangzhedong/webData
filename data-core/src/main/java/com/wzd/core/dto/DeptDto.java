@@ -7,6 +7,8 @@ import java.util.List;
 @Data
 public class DeptDto {
 
+    private String id;
+
     private String deptName;
 
     private String deptNo;

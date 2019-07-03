@@ -1,9 +1,12 @@
 package com.wzd.core.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.wzd.core.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 /**
  * <p>
@@ -24,5 +27,7 @@ public class SysDept extends BaseEntity {
 
     private String deptNo;
 
+    @TableField(exist=false)
+    private List<SysDeptRule> deptRules;
 
 }

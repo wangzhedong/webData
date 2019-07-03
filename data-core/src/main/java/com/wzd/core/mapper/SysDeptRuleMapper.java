@@ -1,11 +1,13 @@
 package com.wzd.core.mapper;
 
-import com.wzd.core.entity.SysDeptRule;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wzd.core.entity.SysDeptRule;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
- *  Mapper 接口
+ *  部门与规则中间表Mapper 接口
  * </p>
  *
  * @author wzd
@@ -13,4 +15,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SysDeptRuleMapper extends BaseMapper<SysDeptRule> {
 
+    /**
+     * 物理删除用户角色关系表
+     * @param wrapper
+     * @return
+     */
+    int physicsDelete(@Param("ew") Wrapper<SysDeptRule> wrapper);
 }
