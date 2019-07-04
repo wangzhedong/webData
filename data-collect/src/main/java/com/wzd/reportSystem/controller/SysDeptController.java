@@ -130,25 +130,27 @@ public class SysDeptController {
         if(StringUtils.isBlank(dto.getDeptNo())){
             return R.failed("部门编号不能为空");
         }
-        int i = sysDeptService.count(new LambdaQueryWrapper<SysDept>().eq(SysDept::getDeptName,dto.getDeptName()));
-        int j = sysDeptService.count(new LambdaQueryWrapper<SysDept>().eq(SysDept::getDeptNo,dto.getDeptNo()));
 
         if(type.equals("add")){
+            int i = sysDeptService.count(new LambdaQueryWrapper<SysDept>().eq(SysDept::getDeptName,dto.getDeptName()));
             if(i != 0 ){
                 return R.failed("部门名称已存在");
             }
+            int j = sysDeptService.count(new LambdaQueryWrapper<SysDept>().eq(SysDept::getDeptNo,dto.getDeptNo()));
             if(j != 0 ){
                 return R.failed("部门编号已存在");
             }
         }else if(type.equals("update")){
-            if(i > 1 ){
-                return R.failed("部门名称已存在");
-            }
-            if(j > 1 ){
-                return R.failed("部门编号已存在");
-            }
             if(StringUtils.isBlank(dto.getId())){
                 return R.failed("id不能为空！");
+            }
+            List<SysDept> li = sysDeptService.list(new LambdaQueryWrapper<SysDept>().eq(SysDept::getDeptName,dto.getDeptName()));
+            if(li != null && li.size() == 1 && !(li.get(0).getId().equals(dto.getId())) ){
+                return R.failed("部门名称已存在");
+            }
+            List<SysDept> lj = sysDeptService.list(new LambdaQueryWrapper<SysDept>().eq(SysDept::getDeptNo,dto.getDeptNo()));
+            if(lj != null && lj.size() == 1 && !(lj.get(0).getId().equals(dto.getId()))){
+                return R.failed("部门编号已存在");
             }
         }
         return null;

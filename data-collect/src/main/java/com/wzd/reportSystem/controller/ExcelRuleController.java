@@ -25,6 +25,11 @@ public class ExcelRuleController {
     @Autowired
     private ExcelRuleService excelRuleService;
 
+    /**
+     * 新增规则
+     * @param rule
+     * @return
+     */
     @PostMapping("add")
     public R add(@RequestBody ExcelRule rule){
         R r = checkRule(rule,"add");
@@ -35,12 +40,17 @@ public class ExcelRuleController {
         return R.ok(null);
     }
 
+    /**
+     * 删除规则，还需要删除部门与规则的关系数据
+     * @param id
+     * @return
+     */
     @GetMapping("del")
     public R del(String id){
         if(StringUtils.isBlank(id)){
             return R.failed("id为空");
         }
-        excelRuleService.removeById(id);
+        excelRuleService.delRle(id);
         return R.ok(null);
     }
 

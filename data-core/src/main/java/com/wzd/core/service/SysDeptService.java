@@ -40,10 +40,10 @@ public class SysDeptService extends ServiceImpl<SysDeptMapper, SysDept> {
      * @param ruleIds
      */
     public void addDept(SysDept dept, List<String> ruleIds) {
+        this.getBaseMapper().insert(dept);
         if (ruleIds != null && !ruleIds.isEmpty()) {
             addDeptRule(ruleIds, dept.getId());
         }
-        this.getBaseMapper().insert(dept);
     }
 
     /**
@@ -59,7 +59,7 @@ public class SysDeptService extends ServiceImpl<SysDeptMapper, SysDept> {
             sysDeptRuleMapper.physicsDelete((new QueryWrapper<SysDeptRule>().eq("dept_id", dept.getId())));
             addDeptRule(ruleIds, dept.getId());
         }
-        this.getBaseMapper().insert(dept);
+        this.getBaseMapper().updateById(dept);
     }
 
     /**
