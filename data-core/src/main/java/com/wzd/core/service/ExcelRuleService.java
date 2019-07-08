@@ -30,7 +30,7 @@ public class ExcelRuleService extends ServiceImpl<ExcelRuleMapper, ExcelRule> {
      * 删除规则，以及规则与部门的关系数据
      * @param ruleId
      */
-    public void delRle(String ruleId){
+    public void delRule(String ruleId){
         sysDeptRuleMapper.physicsDelete((new QueryWrapper<SysDeptRule>().eq("rule_id", ruleId)));
         this.getBaseMapper().deleteById(ruleId);
     }

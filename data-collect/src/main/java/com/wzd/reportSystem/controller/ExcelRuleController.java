@@ -5,10 +5,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzd.core.entity.ExcelRule;
+import com.wzd.core.entity.SysDept;
 import com.wzd.core.service.ExcelRuleService;
+import com.wzd.core.service.SysDeptService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -24,6 +28,9 @@ public class ExcelRuleController {
 
     @Autowired
     private ExcelRuleService excelRuleService;
+
+    @Autowired
+    private SysDeptService sysDeptService;
 
     /**
      * 新增规则
@@ -41,7 +48,7 @@ public class ExcelRuleController {
     }
 
     /**
-     * 删除规则，还需要删除部门与规则的关系数据
+     * 删除规则
      * @param id
      * @return
      */
@@ -50,10 +57,15 @@ public class ExcelRuleController {
         if(StringUtils.isBlank(id)){
             return R.failed("id为空");
         }
-        excelRuleService.delRle(id);
+        excelRuleService.removeById(id);
         return R.ok(null);
     }
 
+    /**
+     * 更新规则
+     * @param rule
+     * @return
+     */
     @PostMapping("update")
     public R update(@RequestBody ExcelRule rule){
         R r = checkRule(rule,"update");
@@ -64,6 +76,13 @@ public class ExcelRuleController {
         return R.ok(null);
     }
 
+    /**
+     * 分页查询规则数据
+     * @param pageIndex
+     * @param pageSize
+     * @param search
+     * @return
+     */
     @GetMapping("queryByPage")
     public R queryByPage(Integer pageIndex,Integer pageSize,String search){
         Page<ExcelRule> page = new Page<>(pageIndex,pageSize);
@@ -72,6 +91,13 @@ public class ExcelRuleController {
             queryWrapper = new LambdaQueryWrapper<ExcelRule>().like(ExcelRule::getRuleName,search);
         }
         IPage<ExcelRule> result = excelRuleService.page(page,queryWrapper);
+        for(ExcelRule rule : result.getRecords()){
+            SysDept dept = sysDeptService.getById(rule.getDeptId());
+            rule.setRuleName(dept.getDeptName());
+        }
+        List<SysDept> depts =  sysDeptService.list();
+
+
         return R.ok(result);
     }
 
@@ -90,6 +116,9 @@ public class ExcelRuleController {
         }
         if(StringUtils.isBlank(rule.getRuleDetail())){
             return R.failed("规则明细为空!");
+        }
+        if(StringUtils.isBlank(rule.getId())){
+            return R.failed("请选择部门!");
         }
         int i = excelRuleService.count(new LambdaQueryWrapper<ExcelRule>().eq(ExcelRule::getRuleName,rule.getRuleName()));
         if(type.equals("add")){
