@@ -5,14 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzd.core.entity.ExcelRule;
-import com.wzd.core.entity.SysDept;
 import com.wzd.core.service.ExcelRuleService;
-import com.wzd.core.service.SysDeptService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * <p>
@@ -28,9 +24,6 @@ public class ExcelRuleController {
 
     @Autowired
     private ExcelRuleService excelRuleService;
-
-    @Autowired
-    private SysDeptService sysDeptService;
 
     /**
      * 新增规则
@@ -91,13 +84,6 @@ public class ExcelRuleController {
             queryWrapper = new LambdaQueryWrapper<ExcelRule>().like(ExcelRule::getRuleName,search);
         }
         IPage<ExcelRule> result = excelRuleService.page(page,queryWrapper);
-        for(ExcelRule rule : result.getRecords()){
-            SysDept dept = sysDeptService.getById(rule.getDeptId());
-            rule.setRuleName(dept.getDeptName());
-        }
-        List<SysDept> depts =  sysDeptService.list();
-
-
         return R.ok(result);
     }
 
@@ -116,9 +102,6 @@ public class ExcelRuleController {
         }
         if(StringUtils.isBlank(rule.getRuleDetail())){
             return R.failed("规则明细为空!");
-        }
-        if(StringUtils.isBlank(rule.getId())){
-            return R.failed("请选择部门!");
         }
         int i = excelRuleService.count(new LambdaQueryWrapper<ExcelRule>().eq(ExcelRule::getRuleName,rule.getRuleName()));
         if(type.equals("add")){

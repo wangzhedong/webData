@@ -29,7 +29,4 @@ public class ExcelRule extends BaseEntity {
 
     private String ruleDetail;
 
-    @TableField(exist=false)
-    private String deptName;
-
 }

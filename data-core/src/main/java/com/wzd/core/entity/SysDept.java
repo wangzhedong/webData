@@ -28,6 +28,6 @@ public class SysDept extends BaseEntity {
     private String deptNo;
 
     @TableField(exist=false)
-    private List<SysDeptRule> deptRules;
+    private ExcelRule excelRule;
 
 }

@@ -9,18 +9,18 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzd.core.dto.DeptDto;
 import com.wzd.core.entity.ExcelRule;
 import com.wzd.core.entity.SysDept;
-import com.wzd.core.entity.SysDeptRule;
 import com.wzd.core.service.ExcelRuleService;
-import com.wzd.core.service.SysDeptRuleService;
 import com.wzd.core.service.SysDeptService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -40,8 +40,6 @@ public class SysDeptController {
     @Autowired
     private ExcelRuleService excelRuleService;
 
-    @Autowired
-    private SysDeptRuleService sysDeptRuleService;
 
     @PostMapping("add")
     public R add(@RequestBody DeptDto dto){
@@ -51,7 +49,7 @@ public class SysDeptController {
         }
         SysDept dept = new SysDept();
         BeanUtils.copyProperties(dto,dept);
-        sysDeptService.addDept(dept,dto.getRuleIds());
+        sysDeptService.addDept(dept,dto.getRuleId());
         return R.ok(null);
     }
 
@@ -72,7 +70,7 @@ public class SysDeptController {
         }
         SysDept dept = new SysDept();
         BeanUtils.copyProperties(dto,dept);
-        sysDeptService.updateDept(dept,dto.getRuleIds());
+        sysDeptService.updateDept(dept,dto.getRuleId());
         return R.ok(null);
     }
 
@@ -86,32 +84,39 @@ public class SysDeptController {
      */
     @GetMapping("queryByPage")
     public R queryByPage(Integer pageIndex,Integer pageSize,String search){
-        String[] selectFields = {"id","rule_name"};
-        List<ExcelRule> rules = excelRuleService.list(new QueryWrapper<ExcelRule>().select(selectFields));
-
+        String[] selectFields = {"id","rule_name","dept_id"};
+        //未被选过的规则
+        List<ExcelRule> rules = new ArrayList<>();
+        //已经选择过的规则
+        List<ExcelRule> checkedRules = new ArrayList<>();
+        List<ExcelRule> allRules = excelRuleService.list(new QueryWrapper<ExcelRule>().select(selectFields));
+        for(ExcelRule rule: allRules){
+            if(StringUtils.isNotBlank(rule.getDeptId())){
+                checkedRules.add(rule);
+            }else{
+                rules.add(rule);
+            }
+        }
+        Map<String,String> map = checkedRules.stream().collect(Collectors.toMap(ExcelRule::getDeptId,ExcelRule::getRuleName));
+        Map<String,Object> result = new HashMap<>();
+        //rules.stream().filter(r-> StringUtils.isBlank(r.getDeptId())).collect(Collectors.toList());
         Page<SysDept> page = new Page<>(pageIndex,pageSize);
         LambdaQueryWrapper<SysDept> queryWrapper = null;
         if(StringUtils.isNotBlank(search)){
             queryWrapper = new LambdaQueryWrapper<SysDept>().like(SysDept::getDeptName,search).or().like(SysDept::getDeptNo,search);
         }
-        IPage<SysDept> result = sysDeptService.page(page,queryWrapper);
-        List<SysDept> list =  result.getRecords();
-        for(SysDept dept : list){
-            List<SysDeptRule> deptRules = sysDeptRuleService.list(new LambdaQueryWrapper<SysDeptRule>().eq(SysDeptRule::getDeptId,dept.getId()));
-            for(SysDeptRule deptRule : deptRules){
-                for(ExcelRule rule : rules){
-                    if(rule.getId().equals(deptRule.getRuleId())){
-                        deptRule.setRuleName(rule.getRuleName());
-                    }
-                }
+        IPage<SysDept> pageResult = sysDeptService.page(page,queryWrapper);
+        for(SysDept dept : pageResult.getRecords()){
+            if(StringUtils.isNotBlank(map.get(dept.getId()))){
+                ExcelRule excelRule = new ExcelRule();
+                excelRule.setDeptId(dept.getId());
+                excelRule.setRuleName(map.get(dept.getId()));
+                dept.setExcelRule(excelRule);
             }
-            dept.setDeptRules(deptRules);
         }
-
-        Map<String,Object> map = new HashMap<>();
-        map.put("pages",result);
-        map.put("rules",rules);
-        return R.ok(map);
+        result.put("pages",pageResult);
+        result.put("rules",rules);
+        return R.ok(result);
     }
 
     /**

@@ -13,5 +13,5 @@ public class DeptDto {
 
     private String deptNo;
 
-    private List<String> ruleIds;
+    private String ruleId;
 }
